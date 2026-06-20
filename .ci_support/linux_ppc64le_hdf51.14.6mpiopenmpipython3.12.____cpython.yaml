@@ -48,6 +48,8 @@ python:
 - 3.12.* *_cpython
 python_impl:
 - cpython
+sqlite:
+- '3'
 target_platform:
 - linux-ppc64le
 zeromq:

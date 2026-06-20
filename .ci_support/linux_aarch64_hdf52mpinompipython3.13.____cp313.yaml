@@ -48,6 +48,8 @@ python:
 - 3.13.* *_cp313
 python_impl:
 - cpython
+sqlite:
+- '3'
 target_platform:
 - linux-aarch64
 ucx:
