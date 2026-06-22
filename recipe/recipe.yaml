@@ -92,8 +92,11 @@ outputs:
           then: true
       files:
         exclude:
-          - bin/**
+          # exclude bin, python
+          - bin/*
           - lib/python*/**
+          # win (.dll is in bin)
+          - Library/bin/*.exe
           - Library/lib/site-packages/**
     requirements:
       run_exports:
@@ -109,7 +112,12 @@ outputs:
       - package_contents:
           bin:
             not_exists:
-              - '*'
+              - if: unix
+                then:
+                  - '*'
+              - if: win
+                then:
+                  - '*.exe'
           include:
             - adios2.h
           lib:
@@ -166,12 +174,13 @@ outputs:
           then: true
       files:
         include:
-          - bin/**
           - if: unix
             then:
+              - bin/*
               - lib/python*/**
           - if: win
             then:
+              - Library/bin/*.exe
               - Library/lib/site-packages/**
     requirements:
       run:
