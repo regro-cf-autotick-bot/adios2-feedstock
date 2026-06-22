@@ -75,12 +75,6 @@ outputs:
             - ucx
         - zlib
         - sqlite
-      ignore_run_exports:
-        from_package:
-          - python
-          - numpy
-          - mpi4py
-          - cross-python_${{ target_platform }}
 
   # C++ library: shared libs, cmake config, headers only (no Python, no CLI tools)
   - package:
@@ -98,6 +92,12 @@ outputs:
       run_exports:
         - ${{ pin_subpackage('libadios2', lower_bound='x.x.x', upper_bound='x.x.x') }}
         - libadios2 * ${{ mpi_prefix }}_*
+      ignore_run_exports:
+        from_package:
+          - python
+          - numpy
+          - mpi4py
+          - cross-python_${{ target_platform }}
     tests:
       - requirements:
           run:
@@ -160,15 +160,11 @@ outputs:
             - numpy
             - if: mpi == "openmpi"
               then: ${{ mpi }}
-      host:
-        - python
       run:
+        # inherits most run dependencies from staging run_exports
+        # overdepends somewhat, but no matter because pinned libadios2
+        # links everything overdepended upon
         - ${{ pin_subpackage('libadios2', exact=True) }}
-        - numpy
-        - if: mpi != "nompi"
-          then:
-            - ${{ mpi }}
-            - mpi4py
       run_exports:
         # Downstream packages that host adios2 get adios2 (Python + tools) at runtime
         - ${{ pin_subpackage('adios2', lower_bound='x.x.x', upper_bound='x.x.x') }}
