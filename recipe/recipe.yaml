@@ -103,6 +103,21 @@ outputs:
           - mpi4py
           - cross-python_${{ target_platform }}
     tests:
+      - package_contents:
+          bin:
+            not_exists:
+              - '*'
+          include:
+            - adios2.h
+          lib:
+            - adios2_c
+            - adios2_cxx
+            - if: mpi != 'nompi'
+              then:
+                - adios2_cxx_mpi
+          files:
+            not_exists:
+              - lib/python*/**
       - requirements:
           run:
             - ${{ compiler('c') }}
@@ -123,16 +138,12 @@ outputs:
               - test -f ${PREFIX}/lib/cmake/adios2/adios2-config.cmake
               - test -f ${PREFIX}/lib/cmake/adios2/adios2-c-targets.cmake
               - test -f ${PREFIX}/lib/cmake/adios2/adios2-cxx-targets.cmake
-              - test -f ${PREFIX}/lib/libadios2_cxx${SHLIB_EXT}
-              - test -f ${PREFIX}/lib/libadios2_c${SHLIB_EXT}
               # Verify Python files are absent from this package
               - test ! -d ${SP_DIR}/adios2
               - test ! -f ${PREFIX}/bin/bp5dbg
               - mpi=${{ mpi }} bash test-libadios.sh
           - if: win
             then:
-              - if exist %LIBRARY_PREFIX%\bin\adios2_cxx.dll (exit 0) else (exit 1)
-              - if exist %LIBRARY_PREFIX%\bin\adios2_c.dll (exit 0) else (exit 1)
               - if exist %LIBRARY_PREFIX%\lib\cmake\adios2\adios2-config.cmake (exit 0) else (exit 1)
               - if exist %LIBRARY_PREFIX%\lib\cmake\adios2\adios2-c-targets.cmake (exit 0) else (exit 1)
               - if exist %LIBRARY_PREFIX%\lib\cmake\adios2\adios2-cxx-targets.cmake (exit 0) else (exit 1)
@@ -164,15 +175,19 @@ outputs:
         - ${{ pin_subpackage('adios2', lower_bound='x.x.x', upper_bound='x.x.x') }}
         - adios2 * ${{ mpi_prefix }}_*
     tests:
+      - package_contents:
+          bin:
+            - bp5dbg
+            - bpls
+          include:
+            not_exists:
+              - '*'
       - script:
           - python -c "import adios2; print(adios2.__version__)"
           - if: unix
             then:
               - bp5dbg --help
               - bpls --help
-          - if: win
-            then:
-              - if exist %LIBRARY_PREFIX%\bin\bp5dbg (exit 0) else (exit 1)
 
 about:
   homepage: https://www.olcf.ornl.gov/center-projects/adios/
