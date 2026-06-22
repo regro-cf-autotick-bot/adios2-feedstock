@@ -58,8 +58,10 @@ cmake               \
     -DADIOS2_RUN_INSTALL_TEST=ON              \
     -DADIOS2_USE_BZip2=${USE_BZIP2}           \
     -DADIOS2_USE_Campaign=ON                  \
+    -DADIOS2_USE_CURL=ON                      \
     -DADIOS2_USE_HDF5=ON                      \
     -DADIOS2_USE_MPI=${USE_MPI}               \
+    -DADIOS2_USE_OPENSSL=ON                   \
     -DADIOS2_USE_PNG=ON                       \
     -DADIOS2_USE_Python=ON                    \
     -DADIOS2_USE_ZeroMQ=ON                    \

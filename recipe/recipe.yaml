@@ -68,7 +68,9 @@ outputs:
             - libsodium
         - bzip2
         - c-blosc2
+        - libcurl
         - libpng
+        - openssl
         - zfp
         - if: linux and mpi != "nompi" and target_platform != "linux-ppc64le"
           then:
