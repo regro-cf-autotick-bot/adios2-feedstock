@@ -109,7 +109,7 @@ outputs:
             then:
               # win (.dll is in bin)
               - Library/bin/*.exe
-              - Library/lib/site-packages/
+              - Lib/site-packages/
     requirements:
       run_exports:
         - ${{ pin_subpackage('libadios2', lower_bound='x.x.x', upper_bound='x.x.x') }}
@@ -142,7 +142,7 @@ outputs:
           files:
             not_exists:
               - lib/python*/**
-              - Library/lib/site-packages/**
+              - Lib/site-packages/**
       - requirements:
           run:
             - ${{ compiler('c') }}
@@ -194,7 +194,7 @@ outputs:
           - if: win
             then:
               - Library/bin/
-              - Library/lib/site-packages/
+              - Lib/site-packages/
         exclude:
           - if: win
             then:
