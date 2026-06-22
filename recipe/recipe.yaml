@@ -94,6 +94,7 @@ outputs:
         exclude:
           - bin/**
           - lib/python*/**
+          - Library/lib/site-packages/**
     requirements:
       run_exports:
         - ${{ pin_subpackage('libadios2', lower_bound='x.x.x', upper_bound='x.x.x') }}
@@ -120,6 +121,7 @@ outputs:
           files:
             not_exists:
               - lib/python*/**
+              - Library/lib/site-packages/**
       - requirements:
           run:
             - ${{ compiler('c') }}
@@ -165,7 +167,12 @@ outputs:
       files:
         include:
           - bin/**
-          - lib/python*/**
+          - if: unix
+            then:
+              - lib/python*/**
+          - if: win
+            then:
+              - Library/lib/site-packages/**
     requirements:
       run:
         # inherits most run dependencies from staging run_exports
