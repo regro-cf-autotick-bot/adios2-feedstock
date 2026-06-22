@@ -22,7 +22,6 @@ cmake ^
     -DADIOS2_USE_MPI=OFF        ^
     -DADIOS2_BUILD_EXAMPLES=OFF ^
     -DADIOS2_Blosc2_PREFER_SHARED=ON  ^
-    -DADIOS2_LIBADIOS_MODE=ON   ^
     -DADIOS2_USE_Blosc2=ON      ^
     -DADIOS2_USE_BZip2=ON       ^
     -DADIOS2_USE_Campaign=ON    ^

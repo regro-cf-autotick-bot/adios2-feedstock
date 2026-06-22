@@ -27,7 +27,7 @@ outputs:
       name: adios2-build
     build:
       script:
-        file: ${{ "build-libadios.sh" if unix else "build-libadios.bat" }}
+        file: build-libadios
         env:
           mpi: ${{ mpi }}
     requirements:
@@ -88,6 +88,10 @@ outputs:
           then: true
         - if: win and mpi != 'nompi'
           then: true
+      files:
+        exclude:
+          - bin/**
+          - lib/python*/**
     requirements:
       run_exports:
         - ${{ pin_subpackage('libadios2', lower_bound='x.x.x', upper_bound='x.x.x') }}
@@ -140,26 +144,16 @@ outputs:
       from: adios2-build
     build:
       string: ${{ mpi_prefix }}_py${{ python | version_to_buildstring }}_h${{ hash }}_${{ build_number }}
-      script:
-        file: ${{ "build-adios-py.sh" if unix else "build-adios-py.bat" }}
       skip:
         - if: python_impl == "pypy"
           then: true
         - if: win and mpi != 'nompi'
           then: true
+      files:
+        include:
+          - bin/**
+          - lib/python*/**
     requirements:
-      build:
-        - ${{ compiler('c') }}
-        - ${{ compiler('cxx') }}
-        - ${{ stdlib('c') }}
-        - cmake
-        - if: build_platform != target_platform
-          then:
-            - python
-            - cross-python_${{ target_platform }}
-            - numpy
-            - if: mpi == "openmpi"
-              then: ${{ mpi }}
       run:
         # inherits most run dependencies from staging run_exports
         # overdepends somewhat, but no matter because pinned libadios2
