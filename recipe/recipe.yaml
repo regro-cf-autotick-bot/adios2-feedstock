@@ -91,13 +91,25 @@ outputs:
         - if: win and mpi != 'nompi'
           then: true
       files:
+        include:
+          - if: win
+            # win needs explicit include bin/*.dll
+            # but not bin/bp5dbg
+            then:
+              - Library/bin/*.dll
+              - Library/include/
+              - Library/lib/
         exclude:
           # exclude bin, python
-          - bin/*
-          - lib/python*/**
-          # win (.dll is in bin)
-          - Library/bin/*.exe
-          - Library/lib/site-packages/**
+          - if: unix
+            then:
+              - bin/
+              - lib/python*/
+          - if: win
+            then:
+              # win (.dll is in bin)
+              - Library/bin/*.exe
+              - Library/lib/site-packages/
     requirements:
       run_exports:
         - ${{ pin_subpackage('libadios2', lower_bound='x.x.x', upper_bound='x.x.x') }}
@@ -118,6 +130,7 @@ outputs:
               - if: win
                 then:
                   - '*.exe'
+                  - bp5dbg
           include:
             - adios2.h
           lib:
@@ -176,12 +189,16 @@ outputs:
         include:
           - if: unix
             then:
-              - bin/*
-              - lib/python*/**
+              - bin/
+              - lib/python*/
           - if: win
             then:
-              - Library/bin/*.exe
-              - Library/lib/site-packages/**
+              - Library/bin/
+              - Library/lib/site-packages/
+        exclude:
+          - if: win
+            then:
+              - Library/bin/*.dll
     requirements:
       run:
         # inherits most run dependencies from staging run_exports
