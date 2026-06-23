@@ -22,13 +22,14 @@ cmake ^
     -DADIOS2_USE_MPI=OFF        ^
     -DADIOS2_BUILD_EXAMPLES=OFF ^
     -DADIOS2_Blosc2_PREFER_SHARED=ON  ^
-    -DADIOS2_LIBADIOS_MODE=ON   ^
     -DADIOS2_USE_Blosc2=ON      ^
     -DADIOS2_USE_BZip2=ON       ^
     -DADIOS2_USE_Campaign=ON    ^
+    -DADIOS2_USE_CURL=ON        ^
     -DADIOS2_USE_Fortran=OFF    ^
     -DADIOS2_USE_HDF5=ON        ^
     -DADIOS2_USE_HDF5_VOL=OFF   ^
+    -DADIOS2_USE_OPENSSL=ON     ^
     -DADIOS2_USE_PNG=ON         ^
     -DADIOS2_USE_Profiling=OFF  ^
     -DADIOS2_USE_Python=ON      ^
@@ -53,3 +54,13 @@ if errorlevel 1 exit 1
 cmake --install build
 
 if errorlevel 1 exit 1
+
+:: python installs to Library/Lib/site-packages instead of Lib/site-packages for some reason
+:: Use xcopy+rd instead of move: move fails when the destination already exists (e.g.
+:: staging cmake --install already placed files in SP_DIR via Python3_SITELIB).
+if exist "%LIBRARY_LIB%\site-packages\adios2" (
+    xcopy /E /I /Y "%LIBRARY_LIB%\site-packages\adios2" "%SP_DIR%\adios2"
+    if errorlevel 1 exit 1
+    rd /S /Q "%LIBRARY_LIB%\site-packages\adios2"
+    if errorlevel 1 exit 1
+)

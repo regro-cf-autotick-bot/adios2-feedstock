@@ -52,15 +52,16 @@ cmake               \
     -GNinja         \
     -DADIOS2_BUILD_EXAMPLES=OFF               \
     -DADIOS2_Blosc2_PREFER_SHARED=ON          \
-    -DADIOS2_LIBADIOS_MODE=ON                 \
     -DADIOS2_USE_Blosc2=ON                    \
     -DADIOS2_HAVE_ZFP_CUDA=OFF                \
     -DADIOS2_INSTALL_GENERATE_CONFIG=OFF      \
     -DADIOS2_RUN_INSTALL_TEST=ON              \
     -DADIOS2_USE_BZip2=${USE_BZIP2}           \
     -DADIOS2_USE_Campaign=ON                  \
+    -DADIOS2_USE_CURL=ON                      \
     -DADIOS2_USE_HDF5=ON                      \
     -DADIOS2_USE_MPI=${USE_MPI}               \
+    -DADIOS2_USE_OPENSSL=ON                   \
     -DADIOS2_USE_PNG=ON                       \
     -DADIOS2_USE_Python=ON                    \
     -DADIOS2_USE_ZeroMQ=ON                    \
