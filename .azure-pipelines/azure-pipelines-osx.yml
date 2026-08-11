@@ -608,7 +608,7 @@ jobs:
         resize_partitions: false
         store_build_artifacts: false
         tools_install_dir: ~/miniforge3
-    maxParallel: 43
+    maxParallel: 50
   timeoutInMinutes: 360
   variables: {}
 
